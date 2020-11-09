@@ -7,7 +7,7 @@ config = ConfigParser()
 config.read('config.ini')
 
 class SparkJob:
-    def __init__(self, job_id: str, job_name: str = None, started_time: str = None, finished_time: str = None, url_tracking: str = None, owner: str = None, **kwargs):   
+    def __init__(self, job_id: str, job_name: str = None, started_time: str = None, finished_time: str = None, tracking_url: str = None, owner: str = None, **kwargs):   
         if kwargs is None:
             if job_id is not None or job_name is not None:
                 self.job_id = job_id if job_id is not None else None
@@ -15,6 +15,7 @@ class SparkJob:
                 self.started_time = started_time
                 self.finished_time = finished_time
                 self.owner = owner
+                self.tracking_url = tracking_url
             else:
                 raise Exception('InputError: id or name must have one of not None')
         else:
