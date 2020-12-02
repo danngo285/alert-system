@@ -73,7 +73,7 @@ class MsTeams_Card:
                     ]
                 }}
             """
-        return cardjson.format(color=color, title=title, id=app.job_id, owner=app.owner, failed_time=app.get_finished_timestamp(local_time = True), tracking_url=app.tracking_url)
+        return cardjson.format(color=color, title=title, id=app.job_id, owner=app.owner, failed_time=app.get_finished_timestamp(True), tracking_url=app.tracking_url)
     
     def send_message(self, message):
         headers = {'Content-type': 'application/json'}

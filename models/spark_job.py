@@ -2,15 +2,6 @@ import os
 import sys
 import json
 import requests
-<<<<<<< HEAD
-from configparser import ConfigParser
-config = ConfigParser()
-config.read('config.ini')
-
-class SparkJob:
-    def __init__(self, job_id: str, job_name: str = None, started_time: str = None, finished_time: str = None, tracking_url: str = None, owner: str = None, **kwargs):   
-        if kwargs is None:
-=======
 import pendulum
 from datetime import datetime
 from configparser import ConfigParser
@@ -76,8 +67,9 @@ class SparkJob:
         resp = requests.get(rm_url, params=body) 
         data = json.loads(resp.content)
         app = [app for app in data['apps']['app'] \
-                if (self.job_name is not None and self.job_name == app['name']) \
-                or (self.job_id is not None and self.job_id == app['id'])]      
+                if app is not None \
+                and ((self.job_name is not None and self.job_name == app['name']) \
+                or (self.job_id is not None and self.job_id == app['id']))]
         
         if app:
             app.sort(key = lambda app: app['finishedTime'], reverse = True)
@@ -104,15 +96,15 @@ class SparkJob:
             return tz_time.to_datetime_string()
 
     def get_last_failed(self):
-        last_failed = self.__get_instance(finishStatus='FAILED')
-        last_killed = self.__get_instance(state = 'KILLED', finishStatus='KILLED')
+        last_failed = self.__get_instance(finalStatus='FAILED')
+        last_killed = self.__get_instance(state = 'KILLED', finalStatus='KILLED')
         if last_failed is None and last_killed is None:
             return None
         elif last_failed is None:
             return last_killed
         elif last_killed is None:
             return last_failed
-        else
+        else:
             return last_failed if last_failed.get_finished_timestamp() > last_killed.get_finished_timestamp() else last_killed
     
     def get_last_success(self):
