@@ -35,7 +35,7 @@ class MsTeams_Card:
                     "@type": "MessageCard",
                     "themeColor": "{color}",
                     "title": "{title}",
-                    "summary": "Alert sent from monitoring minutely job",
+                    "summary": "{name} Failed",
                     "sections": [
                         {{
                             "startGroup": true,
@@ -73,7 +73,7 @@ class MsTeams_Card:
                     ]
                 }}
             """
-        return cardjson.format(color=color, title=title, id=app.job_id, owner=app.owner, failed_time=app.get_finished_timestamp(True), tracking_url=app.tracking_url)
+        return cardjson.format(color=color, title=title, id=app.job_id, name=app.job_name, owner=app.owner, failed_time=app.get_finished_timestamp(True), tracking_url=app.tracking_url)
     
     def send_message(self, message):
         headers = {'Content-type': 'application/json'}
